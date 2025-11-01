@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/isa0-gh/urlshorter/database"
+
 	"github.com/gin-gonic/gin"
 	"github.com/isa0-gh/urlshorter/routes"
 )
@@ -17,6 +19,7 @@ func main() {
 	} else {
 		bindAddress = fmt.Sprintf(":%s", port)
 	}
+	database.Init()
 
 	router := gin.Default()
 	router.GET("/s/:id", routes.RedirectShortUrl)
