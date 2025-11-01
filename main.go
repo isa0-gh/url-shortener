@@ -22,7 +22,9 @@ func main() {
 	database.Init()
 
 	router := gin.Default()
+	router.StaticFile("/", "./static/index.html")
 	router.GET("/s/:id", routes.RedirectShortUrl)
 	router.POST("/api/create", routes.CreateNewShortUrl)
+	router.GET("/d/:id", routes.DeleteShortUrl)
 	router.Run(bindAddress)
 }

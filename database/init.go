@@ -10,14 +10,14 @@ import (
 var DB *sql.DB
 
 func Init() {
-	DB, err := sql.Open("sqlite", "database.db")
+	var err error
+	DB, err = sql.Open("sqlite", "database.db")
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer DB.Close()
 
 	_, err = DB.Exec(`
-		CREATE TABLE IF NOT EXISTS shorted_urls (
+		CREATE TABLE IF NOT EXISTS short_urls (
 			id TEXT NOT NULL,
 			redirect_url TEXT NOT NULL,
 			delete_id TEXT NOT NULL,

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+    <h1 class="text-2xl font-bold mb-6 text-center">URL Shortener</h1>
+    
+    <form id="shortenForm" class="space-y-4">
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">URL</label>
+        <input type="url" id="url" placeholder="https://example.com" required
+               class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
+      
+      <div>
+        <label class="block text-gray-700 font-medium mb-1">Expire After</label>
+        <select id="expire" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="86400">1 Day</option>
+          <option value="2592000">1 Month</option>
+          <option value="31536000">1 Year</option>
+          <option value="315360000">10 Years</option>
+        </select>
+      </div>
+      
+      <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 rounded hover:bg-blue-600 transition">
+        Shorten URL
+      </button>
+    </form>
+
+    <div id="result" class="mt-6 space-y-4"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('shortenForm');
+    const resultDiv = document.getElementById('result');
+
+    // SVG icon as a string
+    const linkSVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 inline-block mr-1 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+          d="M13.828 14.828a4 4 0 005.656-5.656l-4-4a4 4 0 00-5.656 5.656M10.172 9.172a4 4 0 00-5.656 5.656l4 4a4 4 0 005.656-5.656" />
+      </svg>
+    `;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const url = document.getElementById('url').value;
+      const expire = parseInt(document.getElementById('expire').value);
+
+      resultDiv.innerHTML = ''; // Clear previous results
+
+      try {
+        const response = await fetch('/api/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url, expire })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+          resultDiv.innerHTML = `<p class="text-red-500 font-semibold">Error: ${data.error}</p>`;
+        } else {
+          const shortUrl = `${window.location.origin}/s/${data.short_id}`;
+          const deleteUrl = `${window.location.origin}/d/${data.delete_id}`;
+
+          resultDiv.innerHTML = `
+            <div class="p-4 bg-green-100 rounded shadow space-y-1">
+              <p>
+                <span class="font-semibold">Short URL:</span>
+                <a href="${shortUrl}" target="_blank" class="underline">
+                  ${linkSVG}${shortUrl}
+                </a>
+              </p>
+              <p>
+                <span class="font-semibold">Delete URL:</span>
+                <a href="${deleteUrl}" target="_blank" class="text-red-600 underline">${deleteUrl}</a>
+              </p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        resultDiv.innerHTML = `<p class="text-red-500 font-semibold">Network Error</p>`;
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -70,3 +70,12 @@ func Create(url string, expire int) (models.NewUrl, error) {
 	return newUrl, err
 
 }
+
+func Delete(deleteId string) {
+	now := time.Now().Format("2006-01-02 15:04:05")
+	_, _ = database.DB.Exec(`
+		UPDATE short_urls
+		SET expired_at = ?
+		WHERE delete_id = ?
+	`, now, deleteId)
+}

@@ -8,12 +8,11 @@ import (
 
 func RedirectShortUrl(c *gin.Context) {
 	id := c.Param("id")
-	url, err := utils.GetUrl(id)
-	if err != nil {
-		c.Redirect(404, "/") // redirect to index page if its invalid url id
+	url, _ := utils.GetUrl(id)
+	if url == "" {
+		c.Redirect(302, "/") // redirect to index page
 		return
 	}
-
 	c.Redirect(302, url) // redirect to original url
 
 }
@@ -31,4 +30,10 @@ func CreateNewShortUrl(c *gin.Context) {
 		return
 	}
 	c.JSON(200, resp)
+}
+
+func DeleteShortUrl(c *gin.Context) {
+	id := c.Param("id")
+	utils.Delete(id)
+	c.Redirect(302, "/")
 }
