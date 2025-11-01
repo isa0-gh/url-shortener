@@ -14,7 +14,6 @@ func main() {
 	var port string = os.Getenv("PORT")
 	var bindAddress string
 	if port == "" {
-	
 		fmt.Println("Default PORT(8080) will be used. To change port: PORT=500 ./urlshorter")
 		bindAddress = fmt.Sprintf(":%s", "8080")
 	} else {
