@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/isa0-gh/urlshorter/database"
-	"github.com/isa0-gh/urlshorter/models"
+	"github.com/isa0-gh/url-shortener/database"
+	"github.com/isa0-gh/url-shortener/models"
 )
 
 func GetUrl(id string) (string, error) {

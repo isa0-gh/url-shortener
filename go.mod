@@ -1,4 +1,4 @@
-module github.com/isa0-gh/urlshorter
+module github.com/isa0-gh/url-shortener
 
 go 1.24.9
 

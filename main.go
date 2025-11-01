@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/isa0-gh/urlshorter/database"
+	"github.com/isa0-gh/url-shortener/database"
 
 	"github.com/gin-gonic/gin"
-	"github.com/isa0-gh/urlshorter/routes"
+	"github.com/isa0-gh/url-shortener/routes"
 )
 
 func main() {
@@ -26,6 +26,6 @@ func main() {
 	router.GET("/s/:id", routes.RedirectShortUrl)
 	router.POST("/api/create", routes.CreateNewShortUrl)
 	router.GET("/d/:id", routes.DeleteShortUrl)
-	
+
 	router.Run(bindAddress)
 }

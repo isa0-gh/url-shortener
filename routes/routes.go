@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/isa0-gh/urlshorter/database/utils"
-	"github.com/isa0-gh/urlshorter/models"
+	"github.com/isa0-gh/url-shortener/database/utils"
+	"github.com/isa0-gh/url-shortener/models"
 )
 
 func RedirectShortUrl(c *gin.Context) {
